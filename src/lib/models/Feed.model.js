@@ -1,5 +1,23 @@
 import mongoose, { Schema } from "mongoose";
 
+// const WordSchema = new Schema(
+//   {
+//     start: Number,
+//     end: Number,
+//     text: String,
+//     confidence: Number,
+//   },
+//   { _id: false } // prevents auto-creating `_id` for each word
+// );
+
+const UtteranceSchema = new Schema(
+  {
+    speaker: String,
+    text: String,
+  },
+  { _id: false }
+);
+
 const FeedDataSchema = new Schema(
   {
     url: {
@@ -15,6 +33,7 @@ const FeedDataSchema = new Schema(
     transcriptText: {
       type: String,
     },
+    utterances: [UtteranceSchema],
     analysesText: {
       type: String,
     },
@@ -30,3 +49,5 @@ const FeedDataSchema = new Schema(
 
 export default mongoose.models.FeedData ||
   mongoose.model("FeedData", FeedDataSchema);
+
+//for response object look - https://www.assemblyai.com/docs/speech-to-text/pre-recorded-audio/speaker-diarization

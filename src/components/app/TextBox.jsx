@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import Groq from "groq-sdk";
+import { AssemblyAI } from "assemblyai";
 import OpenAI from "openai";
 import { Button } from "../ui/button";
 
-const Uploadform = () => {
+const TextBox = () => {
   const [videoFile, setVideoFile] = useState(null);
   const [transcript, setTranscript] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -14,36 +15,63 @@ const Uploadform = () => {
     const file = event.target.files[0];
     if (file) {
       setVideoFile(file);
-      console.log("This is the file", file);
     }
   };
 
-  console.log("This is videoFile", videoFile);
+  // const whisper = new OpenAI({
+  //   apiKey: process.env.NEXT_PUBLIC_WHISPER_API_KEY,
+  //   dangerouslyAllowBrowser: true,
+  //   baseURL: "https://api.lemonfox.ai/v1",
+  // });
 
-  const whisper = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_WHISPER_API_KEY,
-    dangerouslyAllowBrowser: true,
-    baseURL: "https://api.lemonfox.ai/v1",
+  // async function main() {
+  //   if (!videoFile) {
+  //     console.error("No file selected");
+  //     return;
+  //   }
+
+  //   const transcription = await whisper.audio.transcriptions.create({
+  //     file: videoFile,
+  //     model: "whisper-1",
+  //     speaker_labels: true,
+  //     min_speakers: 1,
+  //     max_speakers: 2,
+  //   });
+
+  //   setTranscript(transcription.text);
+  // }
+
+  const client = new AssemblyAI({
+    apiKey: process.env.NEXT_PUBLIC_ASSEMBLY_API_KEY,
   });
 
-  const groq = new Groq({
-    apiKey: process.env.NEXT_PUBLIC_GROQ_API_SECRET,
-    dangerouslyAllowBrowser: true,
-  });
-
-  async function main() {
+  async function transcribeVideo() {
     if (!videoFile) {
       console.error("No file selected");
       return;
     }
 
-    const transcription = await whisper.audio.transcriptions.create({
-      file: videoFile,
-      model: "whisper-1",
+    const transcript = await client.transcripts.transcribe({
+      audio: videoFile,
+      speech_model: "universal",
+      speaker_labels: true,
+      speaker_options: {
+        min_speakers_expected: 1,
+        max_speakers_expected: 2,
+      },
     });
 
-    setTranscript(transcription.text);
+    console.log(`This is normal text`, transcript);
+
+    transcript.utterances.forEach((w) => {
+      console.log(`[Speaker ${w.speaker}] ${w.text}`);
+    });
   }
+
+  const groq = new Groq({
+    apiKey: process.env.NEXT_PUBLIC_GROQ_API_SECRET,
+    dangerouslyAllowBrowser: true,
+  });
 
   async function analyze() {
     if (!transcript.trim()) {
@@ -74,10 +102,10 @@ Output in structured JSON for easy parsing.`,
   return (
     <div className="w-3/5 h-1/2 bg-amber-500">
       <input type="file" accept="video/*" onChange={handleVideoUpload} />
-      <Button onClick={main}>Generate</Button>
+      <Button onClick={transcribeVideo}>Generate</Button>
       <Button onClick={analyze}>Analyze</Button>
     </div>
   );
 };
 
-export default Uploadform;
+export default TextBox;
