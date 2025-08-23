@@ -23,7 +23,6 @@ const FeedDataSchema = new Schema(
     url: {
       type: String,
       required: true,
-      unique: true,
     },
     contentType: {
       type: String,
@@ -35,7 +34,8 @@ const FeedDataSchema = new Schema(
     },
     utterances: [UtteranceSchema],
     analysesText: {
-      type: String,
+      type: Object,
+      default: {},
     },
     createdBy: {
       type: String,
