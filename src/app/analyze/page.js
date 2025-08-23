@@ -4,7 +4,7 @@ import React from "react";
 
 const Analyze = () => {
   return (
-    <div className="flex items-center justify-center gap-10 h-screen container mx-auto">
+    <div className="flex items-center justify-center gap-2 h-screen container mx-auto">
       <Uploadform />
       <SummaryBox />
     </div>
