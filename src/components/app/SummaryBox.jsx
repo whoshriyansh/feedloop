@@ -1,7 +1,8 @@
 import React from "react";
+import { Card } from "../ui/card";
 
 const SummaryBox = () => {
-  return <div className="w-2/5 h-1/2 bg-amber-500">SummaryBox</div>;
+  return <Card className="w-1/2"></Card>;
 };
 
 export default SummaryBox;
