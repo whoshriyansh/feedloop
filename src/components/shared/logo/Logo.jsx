@@ -4,7 +4,6 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-// Logo.jsx
 export const Logo = ({ width = 200, height = 200 }) => {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);

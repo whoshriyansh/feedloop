@@ -15,8 +15,6 @@ import {
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
-  console.log("Current Theme", theme);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +28,6 @@ export function ModeToggle() {
         <DropdownMenuItem
           onClick={() => {
             setTheme("light");
-            console.log("Theme set to Light but in reality it is", theme);
           }}
         >
           Light
@@ -38,7 +35,6 @@ export function ModeToggle() {
         <DropdownMenuItem
           onClick={() => {
             setTheme("dark");
-            console.log("Theme set to Dark but in reality it is", theme);
           }}
         >
           Dark

@@ -39,7 +39,6 @@ Output in structured JSON for easy parsing.`,
     });
 
     const analyzedText = response.choices[0].message.content;
-    console.log(analyzedText);
 
     const parsed = safeParseAIJson(analyzedText);
 
